@@ -7,6 +7,7 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 public class AgentApplication {
+    //http://localhost:5200
     public static void main(String[] args) {
         SpringApplication.run(AgentApplication.class, args);
     }
