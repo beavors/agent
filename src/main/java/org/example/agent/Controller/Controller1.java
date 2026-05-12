@@ -15,23 +15,28 @@ import java.util.Map;
 @RestController
 public class Controller1 {
     private static List<Map<String, String>> messageHistory = new ArrayList<>();
-    // 自动读取配置文件里的密钥和地址
+    
     @Value("${deepseek.api-key}")
     private String apiKey;
 
     @Value("${deepseek.base-url}")
     private String baseUrl;
 
-    // Spring 自带的请求工具，不用管原理
     @Autowired
     private RestTemplate restTemplate;
+    
+    @Autowired
+    private skill_whether weatherService;
 
-    // 对话接口：浏览器访问就能和AI聊天
     @GetMapping("/chat")
     public String chat(@RequestParam String message, 
                       @RequestParam(required = false, defaultValue = "deepseek-chat") String model,
                       @RequestParam(required = false, defaultValue = "general") String skill) {
         try {
+            if ("weather".equals(skill)) {
+                return weatherService.handleWeatherQuery(message);
+            }
+
             Map<String, String> userMsg = new HashMap<>();
             userMsg.put("role", "user");
             userMsg.put("content", message);

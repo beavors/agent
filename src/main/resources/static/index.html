@@ -516,6 +516,13 @@
                         <div style="font-size: 11px; color: #999;">数据处理和分析</div>
                     </div>
                 </div>
+                <div class="menu-item" onclick="selectSkill('weather')">
+                    <span class="material-icons">wb_sunny</span>
+                    <div>
+                        <div>天气查询</div>
+                        <div style="font-size: 11px; color: #999;">实时天气预报</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -594,7 +601,8 @@
             'coding': '编程专家',
             'writing': '写作助手',
             'translation': '翻译专家',
-            'analysis': '数据分析'
+            'analysis': '数据分析',
+            'weather': '天气查询'
         };
         document.getElementById('currentSkill').textContent = `当前：${skillNames[skill]}`;
         document.querySelectorAll('#skillsMenu .menu-item').forEach(item => {
