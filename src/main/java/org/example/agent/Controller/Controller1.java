@@ -35,7 +35,7 @@ public class Controller1 {
     private Recognition intentRecognizer;
     
     @Autowired(required = false)
-    private RagService ragService;//
+    private RagService ragService;////
 
     @GetMapping("/chat")
     public String chat(@RequestParam String message, 
