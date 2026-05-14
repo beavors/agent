@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 智能助手</title>
+    <title>AI 智能助手 - RAG增强版</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
@@ -39,10 +39,210 @@
             align-items: center;
         }
 
-        .chat-container {
+        .main-container {
             width: 95%;
-            max-width: 900px;
+            max-width: 1400px;
             height: 95vh;
+            display: flex;
+            gap: 16px;
+        }
+
+        .rag-panel {
+            width: 320px;
+            background: var(--md-surface);
+            border-radius: 16px;
+            box-shadow: var(--md-elevation-8);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+
+        .rag-header {
+            background: linear-gradient(135deg, var(--md-secondary) 0%, var(--md-secondary-dark) 100%);
+            color: var(--md-on-primary);
+            padding: 16px 20px;
+            box-shadow: var(--md-elevation-4);
+        }
+
+        .rag-header h2 {
+            font-size: 18px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rag-header p {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        .rag-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: var(--md-background);
+        }
+
+        .rag-section {
+            margin-bottom: 24px;
+        }
+
+        .rag-section h3 {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--md-on-surface);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-area {
+            border: 2px dashed #bdbdbd;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .upload-area:hover {
+            border-color: var(--md-secondary);
+            background: rgba(2, 119, 189, 0.04);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--md-secondary);
+            background: rgba(2, 119, 189, 0.08);
+        }
+
+        .upload-area .material-icons {
+            font-size: 48px;
+            color: #bdbdbd;
+            margin-bottom: 8px;
+        }
+
+        .upload-area p {
+            font-size: 13px;
+            color: #757575;
+            margin: 4px 0;
+        }
+
+        .upload-area input[type="file"] {
+            display: none;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--md-secondary) 0%, var(--md-secondary-dark) 100%);
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: var(--md-elevation-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .btn-primary:hover {
+            box-shadow: var(--md-elevation-4);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            background: #bdbdbd;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-danger {
+            width: 100%;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            background: var(--md-error);
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .btn-danger:hover {
+            background: #d32f2f;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: var(--md-elevation-1);
+        }
+
+        .stats-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .stats-item:last-child {
+            border-bottom: none;
+        }
+
+        .stats-label {
+            font-size: 13px;
+            color: #757575;
+        }
+
+        .stats-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--md-on-surface);
+        }
+
+        .textarea-input {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'Roboto', sans-serif;
+            resize: vertical;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .textarea-input:focus {
+            border-color: var(--md-secondary);
+            box-shadow: 0 0 0 3px rgba(2, 119, 189, 0.1);
+        }
+
+        .chat-container {
+            flex: 1;
             background: var(--md-surface);
             border-radius: 16px;
             box-shadow: var(--md-elevation-8);
@@ -166,6 +366,63 @@
             font-size: 20px;
         }
 
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .toggle-switch label {
+            font-size: 13px;
+            color: #757575;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .3s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--md-primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
         .chat-messages {
             flex: 1;
             padding: 24px;
@@ -254,7 +511,7 @@
             line-height: 1.6;
             box-shadow: var(--md-elevation-1);
         }
-        /* 加粗样式优化 */
+
         .message-content strong {
             font-weight: 700;
         }
@@ -391,161 +648,255 @@
             font-size: 16px;
         }
 
-        .chat-messages::-webkit-scrollbar {
+        .chat-messages::-webkit-scrollbar,
+        .rag-content::-webkit-scrollbar {
             width: 8px;
         }
 
-        .chat-messages::-webkit-scrollbar-track {
+        .chat-messages::-webkit-scrollbar-track,
+        .rag-content::-webkit-scrollbar-track {
             background: transparent;
         }
 
-        .chat-messages::-webkit-scrollbar-thumb {
+        .chat-messages::-webkit-scrollbar-thumb,
+        .rag-content::-webkit-scrollbar-thumb {
             background: var(--md-primary-light);
             border-radius: 4px;
         }
 
-        .chat-messages::-webkit-scrollbar-thumb:hover {
+        .chat-messages::-webkit-scrollbar-thumb:hover,
+        .rag-content::-webkit-scrollbar-thumb:hover {
             background: var(--md-primary);
         }
 
-        .current-selection {
-            font-size: 12px;
-            color: #757575;
-            margin-left: auto;
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            box-shadow: var(--md-elevation-8);
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
         }
 
-        @media (max-width: 600px) {
-            .chat-container {
+        .notification.success {
+            background: #4caf50;
+        }
+
+        .notification.error {
+            background: var(--md-error);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .rag-panel {
                 width: 100%;
-                height: 100vh;
-                border-radius: 0;
+                max-height: 40vh;
             }
 
-            .message-wrapper {
-                max-width: 85%;
-            }
-
-            .toolbar {
-                flex-wrap: wrap;
+            .chat-container {
+                height: 60vh;
             }
         }
     </style>
 </head>
 <body>
-<div class="chat-container">
-    <div class="app-bar">
-        <div class="app-bar-content">
-            <div>
-                <h1><span class="material-icons">smart_toy</span> AI 智能助手</h1>
-                <p>基于 DeepSeek 大模型</p>
+<div class="main-container">
+    <div class="rag-panel">
+        <div class="rag-header">
+            <h2><span class="material-icons">cloud_upload</span> RAG 知识库</h2>
+            <p>上传文档增强 AI 能力</p>
+        </div>
+
+        <div class="rag-content">
+            <div class="rag-section">
+                <h3><span class="material-icons" style="font-size: 18px;">description</span> 上传文件</h3>
+                <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                    <span class="material-icons">upload_file</span>
+                    <p>点击或拖拽文件到此处</p>
+                    <p style="font-size: 11px; color: #999;">支持 .txt 格式</p>
+                    <input type="file" id="fileInput" accept=".txt" onchange="handleFileUpload(event)">
+                </div>
+            </div>
+
+            <div class="rag-section">
+                <h3><span class="material-icons" style="font-size: 18px;">edit_note</span> 直接输入文本</h3>
+                <textarea class="textarea-input" id="textInput" placeholder="在这里输入或粘贴文本内容..."></textarea>
+                <button class="btn-primary" onclick="uploadText()" style="margin-top: 12px;">
+                    <span class="material-icons" style="font-size: 18px;">add</span>
+                    添加文本到知识库
+                </button>
+            </div>
+
+            <div class="rag-section">
+                <h3><span class="material-icons" style="font-size: 18px;">analytics</span> 知识库状态</h3>
+                <div class="stats-card">
+                    <div class="stats-item">
+                        <span class="stats-label">文档数量</span>
+                        <span class="stats-value" id="docCount">0</span>
+                    </div>
+                    <div class="stats-item">
+                        <span class="stats-label">状态</span>
+                        <span class="stats-value" id="ragStatus" style="color: #4caf50;">就绪</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rag-section">
+                <button class="btn-danger" onclick="clearRagData()">
+                    <span class="material-icons" style="font-size: 18px;">delete_forever</span>
+                    清空知识库
+                </button>
             </div>
         </div>
     </div>
 
-    <div class="toolbar">
-        <div style="position: relative;">
-            <button class="dropdown-btn" id="modelBtn" onclick="toggleDropdown('modelMenu')">
-                <span class="material-icons" style="font-size: 18px;">psychology</span>
-                <span id="currentModel">deepseek-chat</span>
-                <span class="material-icons" style="font-size: 18px;">arrow_drop_down</span>
+    <div class="chat-container">
+        <div class="app-bar">
+            <div class="app-bar-content">
+                <div>
+                    <h1><span class="material-icons">smart_toy</span> AI 智能助手</h1>
+                    <p>基于 DeepSeek 大模型 + RAG 增强</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <div style="position: relative;">
+                <button class="dropdown-btn" id="modelBtn" onclick="toggleDropdown('modelMenu')">
+                    <span class="material-icons" style="font-size: 18px;">psychology</span>
+                    <span id="currentModel">deepseek-chat</span>
+                    <span class="material-icons" style="font-size: 18px;">arrow_drop_down</span>
+                </button>
+                <div class="dropdown-menu" id="modelMenu">
+                    <div class="menu-item selected" onclick="selectModel('deepseek-chat')">
+                        <span class="material-icons">auto_awesome</span>
+                        <div>
+                            <div>deepseek-chat</div>
+                            <div style="font-size: 11px; color: #999;">通用对话模型</div>
+                        </div>
+                    </div>
+                    <div class="menu-item" onclick="selectModel('deepseek-coder')">
+                        <span class="material-icons">code</span>
+                        <div>
+                            <div>deepseek-coder</div>
+                            <div style="font-size: 11px; color: #999;">代码专用模型</div>
+                        </div>
+                    </div>
+                    <div class="menu-item" onclick="selectModel('deepseek-reasoner')">
+                        <span class="material-icons">lightbulb</span>
+                        <div>
+                            <div>deepseek-reasoner</div>
+                            <div style="font-size: 11px; color: #999;">推理分析模型</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="position: relative;">
+                <button class="dropdown-btn" id="skillsBtn" onclick="toggleDropdown('skillsMenu')">
+                    <span class="material-icons" style="font-size: 18px;">build</span>
+                    <span>Skills</span>
+                    <span class="material-icons" style="font-size: 18px;">arrow_drop_down</span>
+                </button>
+                <div class="dropdown-menu" id="skillsMenu">
+                    <div class="menu-item" onclick="selectSkill('auto')">
+                        <span class="material-icons">auto_awesome</span>
+                        <div>
+                            <div>智能识别</div>
+                            <div style="font-size: 11px; color: #999;">自动识别技能</div>
+                        </div>
+                    </div>
+                    <div class="menu-item" onclick="selectSkill('general')">
+                        <span class="material-icons">chat</span>
+                        <div>
+                            <div>通用助手</div>
+                            <div style="font-size: 11px; color: #999;">日常对话和问题解答</div>
+                        </div>
+                    </div>
+                    <div class="menu-item" onclick="selectSkill('coding')">
+                        <span class="material-icons">terminal</span>
+                        <div>
+                            <div>编程专家</div>
+                            <div style="font-size: 11px; color: #999;">代码编写和调试</div>
+                        </div>
+                    </div>
+                    <div class="menu-item" onclick="selectSkill('writing')">
+                        <span class="material-icons">edit</span>
+                        <div>
+                            <div>写作助手</div>
+                            <div style="font-size: 11px; color: #999;">文章创作和润色</div>
+                        </div>
+                    </div>
+                    <div class="menu-item" onclick="selectSkill('translation')">
+                        <span class="material-icons">translate</span>
+                        <div>
+                            <div>翻译专家</div>
+                            <div style="font-size: 11px; color: #999;">多语言翻译</div>
+                        </div>
+                    </div>
+                    <div class="menu-item" onclick="selectSkill('analysis')">
+                        <span class="material-icons">analytics</span>
+                        <div>
+                            <div>数据分析</div>
+                            <div style="font-size: 11px; color: #999;">数据处理和分析</div>
+                        </div>
+                    </div>
+                    <div class="menu-item" onclick="selectSkill('weather')">
+                        <span class="material-icons">wb_sunny</span>
+                        <div>
+                            <div>天气查询</div>
+                            <div style="font-size: 11px; color: #999;">实时天气预报</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="toggle-switch">
+                <label>RAG 增强</label>
+                <label class="switch">
+                    <input type="checkbox" id="ragToggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="empty-state">
+                <span class="material-icons">chat_bubble_outline</span>
+                <p>你好！有什么可以帮助你的吗？</p>
+                <p style="font-size: 13px; margin-top: 8px; color: #999;">💡 提示：可以在左侧上传文档，AI 将基于你的知识库回答问题</p>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <button class="btn-icon clear" onclick="clearHistory()" title="清空对话">
+                <span class="material-icons">delete_outline</span>
             </button>
-            <div class="dropdown-menu" id="modelMenu">
-                <div class="menu-item selected" onclick="selectModel('deepseek-chat')">
-                    <span class="material-icons">auto_awesome</span>
-                    <div>
-                        <div>deepseek-chat</div>
-                        <div style="font-size: 11px; color: #999;">通用对话模型</div>
-                    </div>
-                </div>
-                <div class="menu-item" onclick="selectModel('deepseek-coder')">
-                    <span class="material-icons">code</span>
-                    <div>
-                        <div>deepseek-coder</div>
-                        <div style="font-size: 11px; color: #999;">代码专用模型</div>
-                    </div>
-                </div>
-                <div class="menu-item" onclick="selectModel('deepseek-reasoner')">
-                    <span class="material-icons">lightbulb</span>
-                    <div>
-                        <div>deepseek-reasoner</div>
-                        <div style="font-size: 11px; color: #999;">推理分析模型</div>
-                    </div>
-                </div>
+            <div class="input-field">
+                <input type="text" id="messageInput" placeholder="输入你的问题..." onkeypress="handleKeyPress(event)">
             </div>
-        </div>
-
-        <div style="position: relative;">
-            <button class="dropdown-btn" id="skillsBtn" onclick="toggleDropdown('skillsMenu')">
-                <span class="material-icons" style="font-size: 18px;">build</span>
-                <span>Skills</span>
-                <span class="material-icons" style="font-size: 18px;">arrow_drop_down</span>
+            <button class="btn-send" onclick="sendMessage()" id="sendBtn" title="发送">
+                <span class="material-icons">send</span>
             </button>
-            <div class="dropdown-menu" id="skillsMenu">
-                <div class="menu-item" onclick="selectSkill('general')">
-                    <span class="material-icons">chat</span>
-                    <div>
-                        <div>通用助手</div>
-                        <div style="font-size: 11px; color: #999;">日常对话和问题解答</div>
-                    </div>
-                </div>
-                <div class="menu-item" onclick="selectSkill('coding')">
-                    <span class="material-icons">terminal</span>
-                    <div>
-                        <div>编程专家</div>
-                        <div style="font-size: 11px; color: #999;">代码编写和调试</div>
-                    </div>
-                </div>
-                <div class="menu-item" onclick="selectSkill('writing')">
-                    <span class="material-icons">edit</span>
-                    <div>
-                        <div>写作助手</div>
-                        <div style="font-size: 11px; color: #999;">文章创作和润色</div>
-                    </div>
-                </div>
-                <div class="menu-item" onclick="selectSkill('translation')">
-                    <span class="material-icons">translate</span>
-                    <div>
-                        <div>翻译专家</div>
-                        <div style="font-size: 11px; color: #999;">多语言翻译</div>
-                    </div>
-                </div>
-                <div class="menu-item" onclick="selectSkill('analysis')">
-                    <span class="material-icons">analytics</span>
-                    <div>
-                        <div>数据分析</div>
-                        <div style="font-size: 11px; color: #999;">数据处理和分析</div>
-                    </div>
-                </div>
-                <div class="menu-item" onclick="selectSkill('weather')">
-                    <span class="material-icons">wb_sunny</span>
-                    <div>
-                        <div>天气查询</div>
-                        <div style="font-size: 11px; color: #999;">实时天气预报</div>
-                    </div>
-                </div>
-            </div>
         </div>
-
-        <span class="current-selection" id="currentSkill">当前：通用助手</span>
-    </div>
-
-    <div class="chat-messages" id="chatMessages">
-        <div class="empty-state">
-            <span class="material-icons">chat_bubble_outline</span>
-            <p>你好！有什么可以帮助你的吗？</p>
-        </div>
-    </div>
-
-    <div class="input-area">
-        <button class="btn-icon clear" onclick="clearHistory()" title="清空对话">
-            <span class="material-icons">delete_outline</span>
-        </button>
-        <div class="input-field">
-            <input type="text" id="messageInput" placeholder="输入你的问题..." onkeypress="handleKeyPress(event)">
-        </div>
-        <button class="btn-send" onclick="sendMessage()" id="sendBtn" title="发送">
-            <span class="material-icons">send</span>
-        </button>
     </div>
 </div>
 
@@ -553,20 +904,19 @@
     const chatMessages = document.getElementById('chatMessages');
     const messageInput = document.getElementById('messageInput');
     const sendBtn = document.getElementById('sendBtn');
+    const ragToggle = document.getElementById('ragToggle');
 
     let isFirstMessage = true;
     let currentModel = 'deepseek-chat';
-    let currentSkill = 'general';
+    let currentSkill = 'auto';
+    let useRag = true;
 
-    // 简易MD2解析：处理 **加粗 + 换行 + HTML转义
     function md2(text) {
         let html = text
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;');
-        // **加粗
         html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-        // 换行
         html = html.replace(/\n/g, '<br>');
         return html;
     }
@@ -597,6 +947,7 @@
     function selectSkill(skill) {
         currentSkill = skill;
         const skillNames = {
+            'auto': '智能识别',
             'general': '通用助手',
             'coding': '编程专家',
             'writing': '写作助手',
@@ -604,7 +955,12 @@
             'analysis': '数据分析',
             'weather': '天气查询'
         };
-        document.getElementById('currentSkill').textContent = `当前：${skillNames[skill]}`;
+
+        const skillsBtnSpan = document.querySelector('#skillsBtn span:nth-child(2)');
+        if (skillsBtnSpan) {
+            skillsBtnSpan.textContent = skillNames[skill] || 'Skills';
+        }
+
         document.querySelectorAll('#skillsMenu .menu-item').forEach(item => {
             item.classList.remove('selected');
         });
@@ -612,6 +968,11 @@
         document.getElementById('skillsMenu').classList.remove('show');
         addSystemMessage(`已选择技能：${skillNames[skill]}`);
     }
+
+    ragToggle.addEventListener('change', function() {
+        useRag = this.checked;
+        addSystemMessage(useRag ? 'RAG 增强已开启' : 'RAG 增强已关闭');
+    });
 
     function addSystemMessage(text) {
         const systemDiv = document.createElement('div');
@@ -650,7 +1011,6 @@
 
         const contentDiv = document.createElement('div');
         contentDiv.className = 'message-content';
-        // 调用MD2渲染
         contentDiv.innerHTML = md2(content);
 
         wrapperDiv.appendChild(labelDiv);
@@ -704,7 +1064,7 @@
         showLoading();
 
         try {
-            const response = await fetch(`/chat?message=${encodeURIComponent(message)}&model=${encodeURIComponent(currentModel)}&skill=${encodeURIComponent(currentSkill)}`);
+            const response = await fetch(`/chat?message=${encodeURIComponent(message)}&model=${encodeURIComponent(currentModel)}&skill=${encodeURIComponent(currentSkill)}&useRag=${useRag}`);
             const aiResponse = await response.text();
             hideLoading();
             addMessage('ai', aiResponse);
@@ -738,6 +1098,144 @@
         }
     }
 
+    const uploadArea = document.getElementById('uploadArea');
+
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleFile(files[0]);
+        }
+    });
+
+    async function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+            await handleFile(file);
+        }
+    }
+
+    async function handleFile(file) {
+        if (!file.name.endsWith('.txt')) {
+            showNotification('只支持 .txt 格式的文本文件', 'error');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            showNotification('正在上传文件...', 'success');
+            const response = await fetch('/rag/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                showNotification('文件上传成功！', 'success');
+                updateStats(result.documentCount);
+            } else {
+                showNotification('上传失败: ' + result.message, 'error');
+            }
+        } catch (error) {
+            showNotification('上传失败: ' + error.message, 'error');
+        }
+    }
+
+    async function uploadText() {
+        const textInput = document.getElementById('textInput');
+        const text = textInput.value.trim();
+
+        if (!text) {
+            showNotification('请输入文本内容', 'error');
+            return;
+        }
+
+        try {
+            showNotification('正在处理文本...', 'success');
+            const response = await fetch('/rag/upload-text', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: text })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                showNotification('文本添加成功！', 'success');
+                textInput.value = '';
+                updateStats(result.documentCount);
+            } else {
+                showNotification('添加失败: ' + result.message, 'error');
+            }
+        } catch (error) {
+            showNotification('添加失败: ' + error.message, 'error');
+        }
+    }
+
+    async function clearRagData() {
+        if (!confirm('确定要清空知识库吗？这将删除所有上传的文档数据。')) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/rag/clear');
+            const result = await response.json();
+
+            if (result.success) {
+                showNotification('知识库已清空', 'success');
+                updateStats(0);
+            } else {
+                showNotification('清空失败: ' + result.message, 'error');
+            }
+        } catch (error) {
+            showNotification('清空失败: ' + error.message, 'error');
+        }
+    }
+
+    async function updateStats(count) {
+        document.getElementById('docCount').textContent = count;
+    }
+
+    async function loadStats() {
+        try {
+            const response = await fetch('/rag/stats');
+            const result = await response.json();
+
+            if (result.success) {
+                updateStats(result.documentCount);
+            }
+        } catch (error) {
+            console.error('加载统计信息失败:', error);
+        }
+    }
+
+    function showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+
+    loadStats();
     messageInput.focus();
 </script>
 </body>
